@@ -10,7 +10,7 @@ def connect_db(app):
 
 
 class Image(db.Model):
-    """Image Model - shows current state of investments"""
+    """Image Model - shows current state of images"""
 
     __tablename__ = "images"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -18,3 +18,13 @@ class Image(db.Model):
     last_modified = db.Column(db.Date, nullable=False)
     date_created = db.Column(db.Date, nullable=False)
     is_foaming = db.Column(db.Boolean, nullable=True)
+
+    def serialize(self):
+        """Returns a dictionary representation of images to turn into JSON"""
+        return {
+            "id": self.id,
+            "url": self.url,
+            "lastModified": self.last_modified,
+            "dateCreated": self.date_created,
+            "isFoaming": self.is_foaming,
+        }
