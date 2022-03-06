@@ -12,13 +12,15 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ClearIcon from "@mui/icons-material/Clear";
 import BackendApi from "../BackendApi";
+import { CLASSIFICATION } from "../constants";
 
 const ImageCard = memo(({ image }) => {
   const [currentImage, setImage] = useState(image);
-  const CLASSIFICATION = {
-    null: { label: "Unclassified", color: "default" },
-    true: { label: "Foaming", color: "warning" },
-    false: { label: "Not Foaming", color: "primary" },
+
+  const handleClassifyImage = (id, isFoaming) => {
+    BackendApi.classify(id, isFoaming);
+    setImage({ ...currentImage, isFoaming: isFoaming });
+    image.isFoaming = isFoaming;
   };
 
   return (
@@ -48,13 +50,12 @@ const ImageCard = memo(({ image }) => {
           onClick={(event) => {
             event.stopPropagation();
             event.preventDefault();
-            BackendApi.classify(image.id, true);
-            setImage({ ...image, isFoaming: true });
-            image.isFoaming = true;
+            handleClassifyImage(currentImage.id, true);
           }}
         >
           <Tooltip title="Is Foaming">
             <ThumbUpIcon
+              fontSize="small"
               color={
                 image.isFoaming
                   ? CLASSIFICATION[image.isFoaming].color
@@ -68,13 +69,12 @@ const ImageCard = memo(({ image }) => {
           onClick={(event) => {
             event.stopPropagation();
             event.preventDefault();
-            BackendApi.classify(image.id, false);
-            setImage({ ...currentImage, isFoaming: false });
-            image.isFoaming = false;
+            handleClassifyImage(currentImage.id, false);
           }}
         >
           <Tooltip title="Not Foaming">
             <ThumbDownIcon
+              fontSize="small"
               color={
                 !image.isFoaming
                   ? CLASSIFICATION[image.isFoaming].color
@@ -88,13 +88,11 @@ const ImageCard = memo(({ image }) => {
           onClick={(event) => {
             event.stopPropagation();
             event.preventDefault();
-            BackendApi.classify(image.id, null);
-            setImage({ ...image, isFoaming: null });
-            image.isFoaming = null;
+            handleClassifyImage(currentImage.id, null);
           }}
         >
           <Tooltip title="Clear">
-            <ClearIcon color="default" />
+            <ClearIcon fontSize="small" color="default" />
           </Tooltip>
         </IconButton>
 
@@ -108,7 +106,7 @@ const ImageCard = memo(({ image }) => {
               mr: 2,
             }}
             image={image.url}
-            alt={`image created at ${image.dateCreated}`}
+            alt={`created at ${image.dateCreated}`}
           />
         )}
       </Box>

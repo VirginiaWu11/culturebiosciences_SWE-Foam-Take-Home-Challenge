@@ -12,6 +12,9 @@ import Grid from "@mui/material/Grid";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import ImageCard from "./ImageCard";
+import ImageModal from "./ImageModal";
+import { CardActionArea } from "@mui/material";
+import Button from "@mui/material/Button";
 
 const ImagesList = () => {
   const [images, setImages] = useState([]);
@@ -19,6 +22,8 @@ const ImagesList = () => {
   const [isFoaming, setIsFoaming] = useState("null");
   const [itemsPerPage, setItemsPerPage] = useState(16);
   const [page, setPage] = useState(1);
+  const [imageModalOpen, setImageModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState();
 
   const getImages = useCallback(async (page, itemsPerPage, isFoaming) => {
     let response = await BackendApi.getImages(page, itemsPerPage, isFoaming);
@@ -28,7 +33,14 @@ const ImagesList = () => {
 
   useEffect(() => {
     getImages(page, itemsPerPage, isFoaming);
-  }, [getImages, page, itemsPerPage, isFoaming]);
+  }, [getImages, page, itemsPerPage, isFoaming, selectedImage]);
+
+  const handleImageModalOpen = useCallback(async (image) => {
+    setSelectedImage(image);
+    setImageModalOpen(true);
+  }, []);
+
+  const handleImageModalClose = useCallback(() => setImageModalOpen(false), []);
 
   const FilterToggleButtons = () => {
     const handleChange = useCallback((event, nextView) => {
@@ -117,7 +129,14 @@ const ImagesList = () => {
         >
           {images.map((image) => (
             <Grid key={image.id} item xs={3} sm={3} md={3} lg={3}>
-              <ImageCard key={image.id} image={image} />{" "}
+              <CardActionArea
+                component={Button}
+                onClick={() => {
+                  handleImageModalOpen(image);
+                }}
+              >
+                <ImageCard key={image.id} image={image} />{" "}
+              </CardActionArea>
             </Grid>
           ))}{" "}
         </Grid>
@@ -126,6 +145,16 @@ const ImagesList = () => {
           <NumberOfItemsSelect />
           <PaginationOutlined totalPages={totalPages} />
         </Grid>
+        {selectedImage && (
+          <ImageModal
+            image={selectedImage}
+            imageModalOpen={imageModalOpen}
+            handleImageModalClose={handleImageModalClose}
+            setSelectedImage={setSelectedImage}
+            setImages={setImages}
+            images={images}
+          />
+        )}
       </Container>
     </div>
   );
