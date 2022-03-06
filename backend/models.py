@@ -15,8 +15,8 @@ class Image(db.Model):
     __tablename__ = "images"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     url = db.Column(db.String, nullable=False)
-    last_modified = db.Column(db.Date, nullable=False)
-    date_created = db.Column(db.Date, nullable=False)
+    last_modified = db.Column(db.DateTime, nullable=False)
+    date_created = db.Column(db.DateTime, nullable=False)
     is_foaming = db.Column(db.Boolean, nullable=True)
 
     def serialize(self):
