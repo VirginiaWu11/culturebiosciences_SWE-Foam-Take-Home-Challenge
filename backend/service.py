@@ -11,6 +11,8 @@ class ImageService:
         per_page = int(per_page)
         if isFoaming == 'all':
             images = Image.query.paginate(per_page=per_page,page=page_num)
+        elif isFoaming == 'None':
+            images = Image.query.filter(Image.is_foaming.is_(None)).paginate(per_page=per_page,page=page_num)
         else:
             images = Image.query.filter_by(is_foaming=isFoaming).paginate(per_page=per_page,page=page_num)
         total_pages = images.pages
