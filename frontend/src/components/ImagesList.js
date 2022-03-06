@@ -4,8 +4,6 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import ToggleButton from "@mui/material/ToggleButton";
-import ViewListIcon from "@mui/icons-material/ViewList";
-import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
@@ -18,7 +16,7 @@ import ImageCard from "./ImageCard";
 const ImagesList = () => {
   const [images, setImages] = useState([]);
   const [totalPages, setTotalPages] = useState([]);
-  const [isFoaming, setIsFoaming] = useState("all");
+  const [isFoaming, setIsFoaming] = useState("null");
   const [itemsPerPage, setItemsPerPage] = useState(16);
   const [page, setPage] = useState(1);
 
@@ -32,29 +30,6 @@ const ImagesList = () => {
     getImages(page, itemsPerPage, isFoaming);
   }, [getImages, page, itemsPerPage, isFoaming]);
 
-  const ListModuleToggleButtons = () => {
-    const [listModuleView, setlistModuleView] = useState("module");
-    const handleChange = (event, nextView) => {
-      setlistModuleView(nextView);
-    };
-
-    return (
-      <ToggleButtonGroup
-        value={listModuleView}
-        exclusive
-        onChange={handleChange}
-        sx={{ ml: 2, mt: 2 }}
-      >
-        <ToggleButton value="list" aria-label="list">
-          <ViewListIcon />
-        </ToggleButton>
-        <ToggleButton value="module" aria-label="module">
-          <ViewModuleIcon />
-        </ToggleButton>
-      </ToggleButtonGroup>
-    );
-  };
-
   const FilterToggleButtons = () => {
     const handleChange = useCallback((event, nextView) => {
       setIsFoaming(nextView);
@@ -66,11 +41,8 @@ const ImagesList = () => {
         value={isFoaming}
         exclusive
         onChange={handleChange}
-        sx={{ mr: 2, mt: 2 }}
+        sx={{ ml: 2, mt: 2 }}
       >
-        <ToggleButton value="all" aria-label="all images">
-          All Images
-        </ToggleButton>
         <ToggleButton value="null" aria-label="unclassified">
           Unclassified
         </ToggleButton>
@@ -79,6 +51,9 @@ const ImagesList = () => {
         </ToggleButton>
         <ToggleButton value="false" aria-label="not foaming">
           Not Foaming
+        </ToggleButton>
+        <ToggleButton value="all" aria-label="all images">
+          All
         </ToggleButton>
       </ToggleButtonGroup>
     );
@@ -130,11 +105,9 @@ const ImagesList = () => {
     <div>
       <Container maxWidth="xl">
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <ListModuleToggleButtons />
           <FilterToggleButtons />
         </Box>
 
-        {/* <ImagesCardList /> */}
         <Grid
           container
           spacing={{ xs: 2, md: 3 }}
