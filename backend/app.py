@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, request, jsonify
 from service import ImageService
+from flask_cors import CORS
 
 from models import db, connect_db
 
@@ -15,6 +16,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = uri
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "secret")
 app.config["SQLALCHEMY_ECHO"] = False
 
+CORS(app)
 connect_db(app)
 
 @app.route("/images", methods=["GET"])
