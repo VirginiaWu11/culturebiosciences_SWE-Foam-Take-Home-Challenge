@@ -13,14 +13,19 @@ if uri.startswith("postgres://"):
 app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "secret")
-app.config["SQLALCHEMY_ECHO"] = True
+app.config["SQLALCHEMY_ECHO"] = False
 
 connect_db(app)
 
 @app.route("/images", methods=["GET"])
 def get_images():
     "Get Images base on page number"
-    return jsonify(ImageService.get_images(1))
+    page_num = request.args.get("page_num",1)
+    is_foaming = request.args.get("is_foaming","all")
+    per_page = request.args.get("per_page",10)
+    [images_list,total_pages] = ImageService.get_images(page_num,is_foaming,per_page)
+    return jsonify({"images": images_list,"totalPages":total_pages})
+
 
 @app.route("/images/<id>", methods=["POST"])
 def classify_image(id):
