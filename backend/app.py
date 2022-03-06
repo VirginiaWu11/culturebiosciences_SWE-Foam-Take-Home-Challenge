@@ -19,18 +19,19 @@ app.config["SQLALCHEMY_ECHO"] = False
 CORS(app)
 connect_db(app)
 
+
 @app.route("/images", methods=["GET"])
 def get_images():
     "Get Images base on page number"
-    page_num = request.args.get("page_num",1)
-    is_foaming = request.args.get("is_foaming","all")
-    per_page = request.args.get("per_page",10)
-    [images_list,total_pages] = ImageService.get_images(page_num,is_foaming,per_page)
-    return jsonify({"images": images_list,"totalPages":total_pages})
+    page_num = request.args.get("page_num", 1)
+    is_foaming = request.args.get("is_foaming", "all")
+    per_page = request.args.get("per_page", 10)
+    [images_list, total_pages] = ImageService.get_images(page_num, is_foaming, per_page)
+    return jsonify({"images": images_list, "totalPages": total_pages})
 
 
 @app.route("/images/<id>", methods=["POST"])
 def classify_image(id):
     "Classify image as foaming or not"
     is_foaming = request.json.get("isFoaming", None)
-    return jsonify(ImageService.classify_image(id,is_foaming))
+    return jsonify(ImageService.classify_image(id, is_foaming))
