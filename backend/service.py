@@ -10,11 +10,11 @@ class ImageService:
         print("per_page***",per_page)
         per_page = int(per_page)
         if is_foaming == 'all':
-            images = Image.query.paginate(per_page=per_page,page=page_num)
+            images = Image.query.order_by(Image.date_created.desc()).paginate(per_page=per_page,page=page_num)
         elif is_foaming == 'null':
-            images = Image.query.filter(Image.is_foaming.is_(None)).paginate(per_page=per_page,page=page_num)
+            images = Image.query.order_by(Image.date_created.desc()).filter(Image.is_foaming.is_(None)).paginate(per_page=per_page,page=page_num)
         else:
-            images = Image.query.filter_by(is_foaming=is_foaming).paginate(per_page=per_page,page=page_num)
+            images = Image.query.order_by(Image.date_created.desc()).filter_by(is_foaming=is_foaming).paginate(per_page=per_page,page=page_num)
         total_pages = images.pages
         images_list = [Image.serialize(image) for image in images.items]
         return [images_list,total_pages]
