@@ -17,8 +17,8 @@ const ImageModal = ({
   setImages,
   images,
 }) => {
-  const handleClassifyImage = (image, isFoaming) => {
-    BackendApi.classify(image.id, isFoaming);
+  const handleClassifyImage = async (image, isFoaming) => {
+    await BackendApi.classify(image.id, isFoaming);
     setSelectedImage(null);
     image.isFoaming = isFoaming;
     handleImageModalClose();
@@ -62,7 +62,6 @@ const ImageModal = ({
             image={image.url}
             alt={`image created at ${image.dateCreated}`}
           />
-          {/* <img src={image.url} alt={`created at ${image.dateCreated}`} /> */}
         </DialogContent>
 
         <DialogActions>
