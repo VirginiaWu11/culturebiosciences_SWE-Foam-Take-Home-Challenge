@@ -58,6 +58,7 @@ Open Visual Studio Code or other code editor's terminal in a new folder and run 
 - `cd culturebiosciences_SWE-Foam-Take-Home-Challenge/`
 - `cd frontend/` - navigate to frontend folder
 - `npm install` - installs dependencies
+- `npm start` - starts the client
 
 ## Comments:
 
